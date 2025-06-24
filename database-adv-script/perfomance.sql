@@ -1,4 +1,5 @@
 -- Initial Query (Unoptimized) - to retrieve all bookings with user, property, and payment details
+EXPLAIN
 SELECT 
     b.id AS booking_id,
     b.start_date,
@@ -17,11 +18,13 @@ JOIN
 JOIN 
     properties p ON b.property_id = p.id
 JOIN 
-    payments pay ON b.id = pay.booking_id;
-    
+    payments pay ON b.id = pay.booking_id
+WHERE 
+    b.start_date >= '2023-01-01'
+    AND b.end_date <= '2023-12-31';
 
--- Optimized query to improve efficiency
-
+-- Optimized Query - selecting fewer columns, assuming indexes exist
+EXPLAIN
 SELECT 
     b.id AS booking_id,
     b.start_date,
@@ -36,4 +39,7 @@ JOIN
 JOIN 
     properties p ON b.property_id = p.id
 JOIN 
-    payments pay ON pay.booking_id = b.id;
+    payments pay ON pay.booking_id = b.id
+WHERE 
+    b.start_date >= '2023-01-01'
+    AND b.end_date <= '2023-12-31';
