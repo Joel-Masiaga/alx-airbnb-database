@@ -27,3 +27,17 @@ GROUP BY
     p.id, p.name
 ORDER BY 
     booking_rank;
+
+-- 3. Assign a row number to each booking per user - Window Function using ROW_NUMBER()
+SELECT 
+    b.id AS booking_id,
+    b.user_id,
+    u.name AS user_name,
+    b.start_date,
+    ROW_NUMBER() OVER (PARTITION BY b.user_id ORDER BY b.start_date) AS row_num
+FROM 
+    bookings b
+JOIN 
+    users u ON b.user_id = u.id
+ORDER BY 
+    b.user_id, row_num;
